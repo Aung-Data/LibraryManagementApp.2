@@ -1,0 +1,7 @@
+namespace FinalProject
+{
+    internal class LibraryInformation
+    {
+
+    }//end of class
+}//end of namespace
