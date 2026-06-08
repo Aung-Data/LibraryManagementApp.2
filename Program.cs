@@ -169,15 +169,15 @@ namespace LibraryManagementApp._2
                         break;
                     case 5: EditBook();
                         break;
-                    case 6: //ViewMember()
+                    case 6: ViewMember();
                         break;
-                    case 7: //SeatchMember()
+                    case 7: SeatchMember();
+                        break; 
+                    case 8: AddMember();
                         break;
-                    case 8: //AddMember()
+                    case 9: RemoveMember();
                         break;
-                    case 9: //RemoveMember()
-                        break;
-                    case 10: //EditMember()
+                    case 10: EditMember();
                         break;
                     case 99:
                         Console.WriteLine("Logging out...");
@@ -398,6 +398,122 @@ namespace LibraryManagementApp._2
                 Console.WriteLine("Book not found.");
             }
         }//End of ReturnBook Method
+
+        // ViewMember Method
+        public static void ViewMember()
+        {
+            foreach (Member m in members)
+            {
+                m.DisplayMember();
+            }
+        }//end returnbook method
+
+
+        // SearchMember Method
+        public static void SearchMember()
+        {
+            Console.Write("Enter Member ID to search: ");
+            string memberID = Console.ReadLine();
+
+            Member member = members.Find(m =>
+                m.MemberID.Equals(memberID, StringComparison.OrdinalIgnoreCase));
+
+            if (member != null)
+            {
+                Console.WriteLine("Member found:");
+                member.DisplayMember();
+            }
+            else
+            {
+                Console.WriteLine("Member not found.");
+            }
+        }//end of searchmember method
+
+        // AddMember Method
+        public static void AddMember()
+        {
+            Console.Write("Enter Member ID: ");
+            string id = Console.ReadLine();
+
+            Console.Write("Enter Member Name: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Enter Email: ");
+            string email = Console.ReadLine();
+
+            Member newMember = new Member(id, name, email);
+
+            members.Add(newMember);
+
+            Console.WriteLine("Member added successfully.");
+        }// end of add member method
+
+
+
+        // RemoveMember Method
+        public static void RemoveMember()
+        {
+            Console.Write("Enter Member ID to remove: ");
+            string memberID = Console.ReadLine();
+
+            Member member = members.Find(m =>
+                m.MemberID.Equals(memberID, StringComparison.OrdinalIgnoreCase));
+
+            if (member != null)
+            {
+                member.DisplayMember();
+
+                Console.Write("Are you sure you want to delete this member? (y/n): ");
+                char confirm = Convert.ToChar(Console.ReadLine());
+
+                if (confirm == 'y' || confirm == 'Y')
+                {
+                    members.Remove(member);
+                    Console.WriteLine("Member removed successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Deletion cancelled.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Member not found.");
+            }
+        }//end remove member method 
+
+
+        // EditMember Method
+        public static void EditMember()
+        {
+            Console.Write("Enter Member ID to edit: ");
+            string memberID = Console.ReadLine();
+
+            Member member = members.Find(m =>
+                m.MemberID.Equals(memberID, StringComparison.OrdinalIgnoreCase));
+
+            if (member != null)
+            {
+                Console.WriteLine("Current Member Details:");
+                member.DisplayMember();
+
+                Console.Write("Enter new name: ");
+                member.MemberName = Console.ReadLine();
+
+                Console.Write("Enter new email: ");
+                member.Email = Console.ReadLine();
+
+                Console.WriteLine("Member updated successfully.");
+                member.DisplayMember();
+            }
+            else
+            {
+                Console.WriteLine("Member not found.");
+            }
+        }//end edit member method
+
+
+
 
     }//End of Program
 }//End of namespace
