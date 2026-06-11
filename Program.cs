@@ -1,7 +1,12 @@
-﻿namespace LibraryManagementApp._2
+﻿using System.Net;
+
+namespace LibraryManagementApp._2
 {
     internal class Program
     {
+        static List<Book> books = new List<Book>();
+        static List<Member> members = new List<Member>();
+        static List<Transaction> transactions = new List<Transaction>();
         static void Main(string[] args)
         {
             int loginOption;
@@ -28,7 +33,7 @@
                         break;
 
                     case 99:
-                        Console.WriteLine("Exiting application...");
+                        Console.WriteLine("Thank you for using the Library Management Application!!!");
                         break;
 
                     default:
@@ -103,18 +108,17 @@
 
                 switch (option)
                 {
-                    case 1: //ViewBooks()
+                    case 1: ViewBooks();
                         break;
-                    case 2: //SearchBook()
+                    case 2: SearchBook();
                         break;
-                    case 3: //BorrowBook()
+                    case 3: BorrowBook();
                         break;
-                    case 4: //ReturnBook()
+                    case 4: ReturnBook();
                         break;
                     case 99:
-                        Console.WriteLine("Thank you for using the application. Goodbye!!!");
-                        Environment.Exit(0);
-                        break;
+                        Console.WriteLine("Logging out...");
+                        return;                        
                     default:
                         Console.WriteLine("Wrong selection. Please enter the correct number again!!!");
                         break;
@@ -155,30 +159,29 @@
 
                 switch (option)
                 {
-                    case 1: //ViewBooks()
+                    case 1: ViewBooks();
                         break;
-                    case 2: //SearchBook()
+                    case 2: SearchBook();
                         break;
-                    case 3: //AddBook()
+                    case 3: AddBook();
                         break;
-                    case 4: //RemoveBook()
+                    case 4: RemoveBook();
                         break;
-                    case 5: //EditBook()
+                    case 5: EditBook();
                         break;
-                    case 6: //ViewMember()
+                    case 6: ViewMember();
                         break;
-                    case 7: //SearchMember()
+                    case 7: SearchMember();
+                        break; 
+                    case 8: AddMember();
                         break;
-                    case 8: //AddMember()
+                    case 9: RemoveMember();
                         break;
-                    case 9: //RemoveMember()
-                        break;
-                    case 10: //EditMember()
+                    case 10: EditMember();
                         break;
                     case 99:
-                        Console.WriteLine("Thank you for using the application. Goodbye!!!");
-                        Environment.Exit(0);
-                        break;
+                        Console.WriteLine("Logging out...");
+                        return;
                     default:
                         Console.WriteLine("Wrong selection. Please enter the correct number again!!!");
                         break;
@@ -189,8 +192,339 @@
 
             } while (choice == 'y');
 
+        
 
         }//End of Admin Menu
+        public static void ViewBooks()
+        {
+            foreach (Book bk in books)
+            {
+                bk.DisplayBook();
+            }
+
+        }//End of ViewBooks Method
+
+        //AddBook Method
+        public static void AddBook()
+        {
+            Console.WriteLine("Enter the Book ID you would like to add. (example: ab1234)");
+            string bookIDEntered = Console.ReadLine();
+
+            Console.WriteLine("Enter the title of the book you would like to add.");
+            string bookTitleEntered = Console.ReadLine();
+
+            Console.WriteLine("Enter the Author of the book you would like to add.");
+            string bookAuthorEntered = Console.ReadLine();
+
+            Console.WriteLine("Enter the established year of the book.");
+            int yearEstablishedEntered = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Enter the number of copies available.");
+            int copiesEntered = Convert.ToInt32(Console.ReadLine());
+
+            Book newBook = new Book(
+                bookIDEntered,
+                bookTitleEntered,
+                bookAuthorEntered,
+                yearEstablishedEntered,
+                copiesEntered
+            );
+
+            books.Add(newBook);
+
+            Console.WriteLine();
+            Console.WriteLine($"You have successfully added {bookIDEntered} - {bookTitleEntered} ({copiesEntered} copies available).");
+        }//End of AddBook Method
+
+        //RemoveBook Method
+        public static void RemoveBook()
+        {
+            Console.Write("Enter the Book ID to remove: ");
+            string bookIDRemove = Console.ReadLine();
+
+            Book bookRemove = books.Find(b => b.BookID.Equals(bookIDRemove, StringComparison.OrdinalIgnoreCase));
+
+            if (bookRemove != null)
+            {
+                bookRemove.DisplayBook();
+
+                Console.Write("\nAre you sure you want to delete this book? (y/n): ");
+                char confirm = Convert.ToChar(Console.ReadLine());
+
+                if (confirm == 'y' || confirm == 'Y')
+                {
+                    books.Remove(bookRemove);
+
+                    Console.WriteLine("Book successfully removed.");
+                }
+                else
+                {
+                    Console.WriteLine("Deletion cancelled.");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Book {bookIDRemove} was not found.");
+            }
+        }//End of RemoveBook Method
+
+        //EditBook Method
+        public static void EditBook()
+        {
+            Console.Write("Enter the Book ID to edit: ");
+            string bookIDEdit = Console.ReadLine();
+
+            Book bookEdit = books.Find(b => b.BookID.Equals(bookIDEdit, StringComparison.OrdinalIgnoreCase));
+
+            if (bookEdit != null)
+            {
+                Console.WriteLine("\nCurrent Book Details:");
+                bookEdit.DisplayBook();
+
+                Console.WriteLine("\nEnter New Book Title:");
+                bookEdit.BookTitle = Console.ReadLine();
+
+                Console.WriteLine("Enter New Author:");
+                bookEdit.Author = Console.ReadLine();
+
+                Console.WriteLine("Enter New Year Established:");
+                bookEdit.YearEstablished =
+                    Convert.ToInt32(Console.ReadLine());
+
+                Console.WriteLine("Enter New Number of Copies:");
+                bookEdit.NumberOfCopies =
+                    Convert.ToInt32(Console.ReadLine());
+
+                Console.WriteLine("\nBook details updated successfully.");
+
+                Console.WriteLine("\nUpdated Book Details:");
+                bookEdit.DisplayBook();
+            }
+            else
+            {
+                Console.WriteLine(
+                    $"Book {bookIDEdit} was not found.");
+            }
+        }//End of EditBook Method
+
+        //SearchBook Method
+        public static void SearchBook()
+        {
+            Console.WriteLine("Enter the book ID that you would like to remove from the library (example: ab1234).");
+            string bookIDSearch = Console.ReadLine();
+
+            Book bookSearch = books.Find(e=> e.BookID.Equals( bookIDSearch, StringComparison.OrdinalIgnoreCase));
+            if (bookSearch != null)
+            {
+                Console.WriteLine($"Book {bookIDSearch} is found in the list");
+
+                bookSearch.DisplayBook();
+               
+            }
+            else
+                Console.WriteLine($"Book {bookIDSearch} is not in the list");
+
+        }//End of SearchBook Method
+
+        //BorrowBook Method
+        public static void BorrowBook()
+        {
+            Console.Write("Enter Member ID: ");
+            string memberID = Console.ReadLine();
+
+            Console.Write("Enter Book ID: ");
+            string bookID = Console.ReadLine();
+
+            Book book = books.Find(b => b.BookID.Equals(bookID, StringComparison.OrdinalIgnoreCase));
+
+            if (book != null)
+            {
+                if (book.NumberOfCopies > 0)
+                {
+                    book.BorrowBook();
+
+                    Transaction newTransaction =
+                        new Transaction(
+                            "T" + (transactions.Count + 1),
+                            bookID,
+                            memberID,
+                            "Borrow"
+                        );
+
+                    transactions.Add(newTransaction);
+
+                    Console.WriteLine("Transaction recorded.");
+                }
+                else
+                {
+                    Console.WriteLine("No copies available.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Book not found.");
+            }
+        }//End of BorrowBook Method
+
+        //ReturnBook Method
+        public static void ReturnBook()
+        {
+            Console.Write("Enter Member ID: ");
+            string memberID = Console.ReadLine();
+
+            Console.Write("Enter Book ID: ");
+            string bookID = Console.ReadLine();
+
+            Book book = books.Find(b => b.BookID.Equals(bookID, StringComparison.OrdinalIgnoreCase));
+
+            if (book != null)
+            {
+                book.ReturnBook();
+
+                Transaction newTransaction =
+                    new Transaction(
+                        "T" + (transactions.Count + 1),
+                        bookID,
+                        memberID,
+                        "Return"
+                    );
+
+                transactions.Add(newTransaction);
+
+                Console.WriteLine("Return transaction recorded.");
+            }
+            else
+            {
+                Console.WriteLine("Book not found.");
+            }
+        }//End of ReturnBook Method
+
+        // ViewMember Method
+        public static void ViewMember()
+        {
+            foreach (Member m in members)
+            {
+                m.DisplayDetails();
+            }
+        }//end returnbook method
+
+
+        // SearchMember Method
+        public static void SearchMember()
+        {
+            Console.Write("Enter Member ID to search: ");
+            string memberID = Console.ReadLine();
+
+            Member member = members.Find(m =>
+                m.MemberID.Equals(memberID, StringComparison.OrdinalIgnoreCase));
+
+            if (member != null)
+            {
+                Console.WriteLine("Member found:");
+                member.DisplayDetails();
+            }
+            else
+            {
+                Console.WriteLine("Member not found.");
+            }
+        }//end of searchmember method
+
+        // AddMember Method
+        public static void AddMember()
+        {
+            Console.Write("Enter Member ID: ");
+            string id = Console.ReadLine();
+
+            Console.Write("Enter First Name: ");
+            string firstName = Console.ReadLine();
+
+            Console.Write("Enter Last Name: ");
+            string lastName = Console.ReadLine();
+
+            Console.Write("Enter Email: ");
+            string email = Console.ReadLine();
+
+            Console.Write("Enter Phone: ");
+            string phone = Console.ReadLine();
+
+            Member newMember = new Member(id, firstName, lastName, email, phone);
+
+            members.Add(newMember);
+
+            Console.WriteLine("Member added successfully.");
+        
+        }// end of add member method
+
+
+
+        // RemoveMember Method
+        public static void RemoveMember()
+        {
+            Console.Write("Enter Member ID to remove: ");
+            string memberID = Console.ReadLine();
+
+            Member member = members.Find(m =>
+                m.MemberID.Equals(memberID, StringComparison.OrdinalIgnoreCase));
+
+            if (member != null)
+            {
+                member.DisplayDetails();
+
+                Console.Write("Are you sure you want to delete this member? (y/n): ");
+                char confirm = Convert.ToChar(Console.ReadLine());
+
+                if (confirm == 'y' || confirm == 'Y')
+                {
+                    members.Remove(member);
+                    Console.WriteLine("Member removed successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Deletion cancelled.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Member not found.");
+            }
+        }//end remove member method 
+
+
+        // EditMember Method
+        public static void EditMember()
+        {
+            Console.Write("Enter Member ID to edit: ");
+            string memberID = Console.ReadLine();
+
+            Member member = members.Find(m =>
+                m.MemberID.Equals(memberID, StringComparison.OrdinalIgnoreCase));
+
+            if (member != null)
+            {
+                Console.WriteLine("Current Member Details:");
+                member.DisplayDetails();
+
+                Console.Write("Enter new First Name: ");
+                member.FirstName = Console.ReadLine();
+
+                Console.Write("Enter new Last Name: ");
+                member.LastName = Console.ReadLine();
+
+                Console.Write("Enter new Email: ");
+                member.MemberEmail = Console.ReadLine();
+
+                Console.Write("Enter new Phone: ");
+                member.MemberPhone = Console.ReadLine();
+
+                Console.WriteLine("Member updated successfully.");
+
+                member.DisplayDetails();
+            }
+            else
+            {
+                Console.WriteLine("Member not found.");
+            }
+        }//end edit member method
 
     }//End of Program
 }//End of namespace

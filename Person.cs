@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LibraryManagementApp._2
 {
-     public class Person
+    public class Person
     {
         //Person class properties
         public string FirstName { get; set; }

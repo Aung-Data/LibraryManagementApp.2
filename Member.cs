@@ -4,52 +4,39 @@ using System.Text;
 
 namespace LibraryManagementApp._2
 {
-    public class Member
+    public class Member : Person
     {
-        //Member class field
-        private int memberID;
-        private string memberFirstName;
-        private string memberLastName;
-        private string memberEmail;       
+        //Member class field
+        private string memberID;
+        private string memberEmail;
         private string memberPhone;
 
-        //Member Class Properties
-        public int MemberID {  get { return memberID; } set { memberID = value; } }
-        public string MemberFirstName {  get { return memberFirstName; } set { memberFirstName = value; } }
-        public string MemberLastName { get { return memberLastName; } set { memberLastName = value;  } }
-        public string MemberEmail { get { return memberEmail; } set { memberEmail = value; } }   
+        //Member Class Properties
+        public string MemberID { get { return memberID; } set { memberID = value; } }
+        public string MemberEmail { get { return memberEmail; } set { memberEmail = value; } }
         public string MemberPhone { get { return memberPhone; } set { memberPhone = value; } }
 
-        //Member Class Constructors
-        public Member(int id, string fn, string ln, string em, string ph)         
+        //Member Class Constructors
+        public Member(string id, string fn, string ln, string em, string ph) : base(fn, ln)
         {
             MemberID = id;
-            MemberFirstName= fn;
-            MemberLastName = ln;
-            MemberEmail = em;        
+            MemberEmail = em;
             MemberPhone = ph;
 
         }
 
-        //Member Class Methods
-        //DisplayMember Method
-
-        public void DisplayMember()
+        //Polymorphism: override method from Person class
+        public override void DisplayDetails()
         {
-            Console.WriteLine("==========Member Details==========");
-            Console.WriteLine("==================================");
+            Console.WriteLine("========== Member Details ==========");
+            Console.WriteLine("====================================");
             Console.WriteLine($"Member ID:\t\t{MemberID}");
-            Console.WriteLine($"First Name:\t\t{MemberFirstName}");
-            Console.WriteLine($"Last Name:\t\t{MemberLastName}");
+            Console.WriteLine($"First Name:\t\t{FirstName}");
+            Console.WriteLine($"Last Name:\t\t{LastName}");
             Console.WriteLine($"Email:\t\t\t{MemberEmail}");
             Console.WriteLine($"Phone:\t\t\t{MemberPhone}");
-            Console.WriteLine("==================================");
-
+            Console.WriteLine("====================================");
         }
-
-
-
-
 
     }//End of class
 }//End of namespace
