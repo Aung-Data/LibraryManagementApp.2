@@ -167,7 +167,7 @@
                         break;
                     case 6: //ViewMember()
                         break;
-                    case 7: //SeatchMember()
+                    case 7: //SearchMember()
                         break;
                     case 8: //AddMember()
                         break;
