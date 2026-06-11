@@ -171,7 +171,7 @@ namespace LibraryManagementApp._2
                         break;
                     case 6: ViewMember();
                         break;
-                    case 7: SeatchMember();
+                    case 7: SearchMember();
                         break; 
                     case 8: AddMember();
                         break;
@@ -404,7 +404,7 @@ namespace LibraryManagementApp._2
         {
             foreach (Member m in members)
             {
-                m.DisplayMember();
+                m.DisplayDetails();
             }
         }//end returnbook method
 
@@ -421,7 +421,7 @@ namespace LibraryManagementApp._2
             if (member != null)
             {
                 Console.WriteLine("Member found:");
-                member.DisplayMember();
+                member.DisplayDetails();
             }
             else
             {
@@ -435,17 +435,24 @@ namespace LibraryManagementApp._2
             Console.Write("Enter Member ID: ");
             string id = Console.ReadLine();
 
-            Console.Write("Enter Member Name: ");
-            string name = Console.ReadLine();
+            Console.Write("Enter First Name: ");
+            string firstName = Console.ReadLine();
+
+            Console.Write("Enter Last Name: ");
+            string lastName = Console.ReadLine();
 
             Console.Write("Enter Email: ");
             string email = Console.ReadLine();
 
-            Member newMember = new Member(id, name, email);
+            Console.Write("Enter Phone: ");
+            string phone = Console.ReadLine();
+
+            Member newMember = new Member(id, firstName, lastName, email, phone);
 
             members.Add(newMember);
 
             Console.WriteLine("Member added successfully.");
+        
         }// end of add member method
 
 
@@ -461,7 +468,7 @@ namespace LibraryManagementApp._2
 
             if (member != null)
             {
-                member.DisplayMember();
+                member.DisplayDetails();
 
                 Console.Write("Are you sure you want to delete this member? (y/n): ");
                 char confirm = Convert.ToChar(Console.ReadLine());
@@ -495,25 +502,29 @@ namespace LibraryManagementApp._2
             if (member != null)
             {
                 Console.WriteLine("Current Member Details:");
-                member.DisplayMember();
+                member.DisplayDetails();
 
-                Console.Write("Enter new name: ");
-                member.MemberName = Console.ReadLine();
+                Console.Write("Enter new First Name: ");
+                member.FirstName = Console.ReadLine();
 
-                Console.Write("Enter new email: ");
-                member.Email = Console.ReadLine();
+                Console.Write("Enter new Last Name: ");
+                member.LastName = Console.ReadLine();
+
+                Console.Write("Enter new Email: ");
+                member.MemberEmail = Console.ReadLine();
+
+                Console.Write("Enter new Phone: ");
+                member.MemberPhone = Console.ReadLine();
 
                 Console.WriteLine("Member updated successfully.");
-                member.DisplayMember();
+
+                member.DisplayDetails();
             }
             else
             {
                 Console.WriteLine("Member not found.");
             }
         }//end edit member method
-
-
-
 
     }//End of Program
 }//End of namespace
